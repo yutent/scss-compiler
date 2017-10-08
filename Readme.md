@@ -24,4 +24,11 @@ sudo gem install sass
 
 ## 插件安装
 > 目前只能通过下载方式, 复制到sublime的插件目录,进行安装使用。
+> 复制完之后,目录结构应该如下所示
 
+```
+ - subime-text-3/
+   - Packages/
+     - scss-compiler/
+     - 其他插件等/
+```
