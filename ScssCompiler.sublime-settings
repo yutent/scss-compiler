@@ -1,0 +1,19 @@
+{
+    // Auto compile the scss file into css on file save?
+    // default saving rule:  demo.scss -> demo.css
+    // It will be saved in current dir.
+    "compile_on_save": true,
+
+    //It will compress css file if it set to be true
+    "compress_on_compile": true,
+
+    // Only work on  compress_on_compile set to false
+    // value can be one of these three:
+    // nested/compact/expanded
+    "compile_style": "expanded",
+
+
+    // How to link generated output to the source file.
+    "sourcemap": false
+
+}
