@@ -19,35 +19,30 @@
   "contributes": {
     "context": [
       {
-        "command": "ScssCompiler.compile",
+        "command": "Scss2css.compile",
         "title": "Compile this scss file"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "scss-compiler 配置",
+      "title": "Scss-to-css 配置",
       "properties": {
-        "ScssCompiler.compileOnSave": {
+        "Scss2css.compileOnSave": {
           "type": "boolean",
           "default": true,
           "description": "保存后自动编译"
         },
-        "ScssCompiler.autoPrefixer": {
+        "Scss2css.autoPrefixer": {
           "type": "boolean",
           "default": true,
           "description": "是否自动补全浏览器前缀(可以手动在项目目录添加 .browserslistrc)"
         },
-        "ScssCompiler.output": {
+        "Scss2css.output": {
           "type": "string",
           "default": "compressed",
           "description": "css 文件输出方式. 使用 \"nested\", \"expanded\", \"compact\" or \"compressed\" .\n PS. 如果需要同时编译多种, 可用'|' 分隔, 如 compact | compressed \n 注: 如果编译多种,会自动微调文件名, 编译单个则不微调。"
         },
-        "ScssCompiler.sourcemap": {
-          "type": "boolean",
-          "default": false,
-          "description": "是否生成sourcemap,默认否"
-        },
-        "ScssCompiler.exclude": {
+        "Scss2css.exclude": {
           "type": "string",
           "default": "",
           "description": "要忽略的文件的正则表达式(默认不编译var.scss文件)。"
@@ -61,5 +56,11 @@
   "license": "MIT",
   "devDependencies": {
     "vscode": "^1.1.21"
+  },
+  "dependencies": {
+    "node-sass": "^4.10.0",
+    "iofs": "^1.1.0",
+    "postcss": "^7.0.6",
+    "autoprefixer": "^9.3.1"
   }
 }

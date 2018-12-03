@@ -10,9 +10,11 @@ const vsc = require('vscode')
 const path = require('path')
 const cp = require('child_process')
 
+const fs = require('iofs')
 const scss = require('node-sass')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
+const prefixer = postcss().use(autoprefixer())
 
 const std = vsc.window.createOutputChannel('scss-to-css')
 std.out = function() {
@@ -22,24 +24,47 @@ const log = function(...args) {
   console.log.apply(console, args)
 }
 
-let compileOpts = {
+const render = function(style, file) {
+  return new Promise((resolve, reject) => {
+    scss.render({ outputStyle: style, file }, (err, { css }) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(css)
+      }
+    })
+  })
+}
+
+let options = {
   compileOnSave: true,
   autoPrefixer: true,
   output: 'compressed',
-  sourcemap: false,
   exclude: ''
 }
 
-const exec = function(arr, cb) {
-  let cmd = arr.join(' ')
-  return new Promise((yes, no) => {
-    cp.exec(cmd, (err, out) => {
-      if (err) {
-        no('err: ' + err)
-      } else {
-        yes(arr)
-      }
-    })
+// const exec = function(arr, cb) {
+//   let cmd = arr.join(' ')
+//   return new Promise((yes, no) => {
+//     cp.exec(cmd, (err, out) => {
+//       if (err) {
+//         no('err: ' + err)
+//       } else {
+//         yes(arr)
+//       }
+//     })
+//   })
+// }
+
+const compileCss = (style, entry, output) => {
+  return render(style, entry).then(css => {
+    if (options.autoPrefixer) {
+      return prefixer.process(css, { from: '', to: '' }).then(result => {
+        return { css: result.css, output }
+      })
+    } else {
+      return { css, output }
+    }
   })
 }
 
@@ -48,57 +73,40 @@ const Compiler = {
     let origin = doc.fileName || ''
     let target = origin.replace(/\.scss$/, '.')
     let task = []
-    let postArgs = ['postcss', '--no-map', '-r', '-u', 'autoprefixer']
 
     // 说明不是scss文件
     if (origin === target) {
       return
     }
 
-    task = compileOpts.output.map(type => {
-      let cmd = ['scss', '-C', '-t', type]
+    task = options.output.map(style => {
       let ext = 'css'
 
-      if (compileOpts.sourcemap) {
-        cmd.push('--sourcemap=auto')
-      } else {
-        cmd.push('--sourcemap=none')
-      }
-      switch (type) {
+      switch (style) {
         case 'compressed':
           ext = 'min.' + ext
           break
         default:
-          ext = type.slice(0, 1) + '.' + ext
+          ext = style.slice(0, 1) + '.' + ext
       }
 
-      cmd.push(origin, target + ext)
-      return cmd
+      return { style, output: target + ext }
     })
 
     // 编译单一类型, 则去掉文件名微调
     if (task.length === 1) {
-      task[0].pop()
-      task[0].push(target + 'css')
+      task[0].output = target + 'css'
     }
 
     task = task.map(item => {
-      return exec(item)
+      return compileCss(item.style, origin, item.output)
     })
 
     Promise.all(task)
       .then(list => {
-        if (compileOpts.autoPrefixer) {
-          let task2 = list.map(cmd => {
-            let arr = postArgs.concat()
-            arr.splice(1, 0, cmd.pop())
-            return exec(arr)
-          })
-
-          return Promise.all(task2)
-        } else {
-          return true
-        }
+        list.forEach(it => {
+          fs.echo(it.css, it.output)
+        })
       })
       .catch(err => {
         log(err)
@@ -110,9 +118,8 @@ const Compiler = {
    * 用于保存时编译的动作, 右键编译时, 不过滤这2项
    */
   filter(doc) {
-    log(doc)
     // 未开启保存时编译
-    if (!compileOpts.compileOnSave) {
+    if (!options.compileOnSave) {
       return
     }
 
@@ -124,8 +131,8 @@ const Compiler = {
     }
 
     // 过滤不编译的文件
-    if (compileOpts.exclude) {
-      let exp = new RegExp(compileOpts.exclude, 'i')
+    if (options.exclude) {
+      let exp = new RegExp(options.exclude, 'i')
       if (exp.test(origin)) {
         return
       }
@@ -137,10 +144,10 @@ const Compiler = {
 
 function activate(ctx) {
   // log('hello, the extend scss-compiler is running....')
-  let options = vsc.workspace.getConfiguration('ScssCompiler')
-  Object.assign(compileOpts, options)
+  let conf = vsc.workspace.getConfiguration('Scss2css')
+  Object.assign(options, conf)
 
-  compileOpts.output = compileOpts.output.split('|')
+  options.output = options.output.split('|').map(it => it.trim())
 
   vsc.workspace.onDidSaveTextDocument(doc => {
     Compiler.filter(doc)
