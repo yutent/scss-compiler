@@ -2,7 +2,7 @@
   "name": "scss-to-css",
   "displayName": "scss-to-css",
   "description": "最简单易用的SCSS编译器, 可自动编译scss文件及补全前缀",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
@@ -35,7 +35,7 @@
         "Scss2css.autoPrefixer": {
           "type": "boolean",
           "default": true,
-          "description": "是否自动补全浏览器前缀(可以手动在项目目录添加 .browserslistrc)"
+          "description": "是否自动补全浏览器前缀(可以手动在项目根目录添加 .browserslistrc)"
         },
         "Scss2css.output": {
           "type": "string",
