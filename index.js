@@ -14,10 +14,10 @@ const fs = require('iofs')
 const scss = require('node-sass')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
-const prefixer = postcss().use(autoprefixer())
+let prefixer
 
 const std = vsc.window.createOutputChannel('scss-to-css')
-std.out = function() {
+std.out = function(msg) {
   std.appendLine(msg)
 }
 const log = function(...args) {
@@ -109,7 +109,7 @@ const Compiler = {
         })
       })
       .catch(err => {
-        log(err)
+        std.out(err)
       })
   },
 
@@ -143,11 +143,35 @@ const Compiler = {
 }
 
 function activate(ctx) {
-  // log('hello, the extend scss-compiler is running....')
+  // log('hello, the extend scss--to-css is running....')
+
+  let folders = vsc.workspace.workspaceFolders
+  let wsf = ''
+  let browsersrc = ''
+  if (folders && folders.length) {
+    wsf = folders[0].uri.path
+  }
+  if (wsf) {
+    browsersrc = path.join(wsf, '.browserslistrc')
+  }
+
+  if (fs.exists(browsersrc)) {
+    options.browsers = fs
+      .cat(browsersrc)
+      .toString()
+      .split(/[\n\r]/)
+  }
+
   let conf = vsc.workspace.getConfiguration('Scss2css')
   Object.assign(options, conf)
 
   options.output = options.output.split('|').map(it => it.trim())
+
+  prefixer = postcss().use(
+    autoprefixer({
+      browsers: options.browsers
+    })
+  )
 
   vsc.workspace.onDidSaveTextDocument(doc => {
     Compiler.filter(doc)

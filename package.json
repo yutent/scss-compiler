@@ -2,7 +2,7 @@
   "name": "scss-to-css",
   "displayName": "scss-to-css",
   "description": "最简单易用的SCSS编译器, 可自动编译scss文件及补全前缀",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
