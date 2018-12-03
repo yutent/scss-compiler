@@ -50,9 +50,21 @@
       }
     }
   },
-  "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yutent/scss-to-css.git"
   },
+  "keywords": [
+    "scss",
+    "sass",
+    "easy scss",
+    "easy sass",
+    "less",
+    "compile",
+    "postcss",
+    "autoprefixer",
+    "yutent"
+  ],
   "license": "MIT",
   "devDependencies": {
     "vscode": "^1.1.21"

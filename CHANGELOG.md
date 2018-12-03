@@ -1,7 +1,5 @@
-# Change Log
-All notable changes to the "scss-to-css" extension will be documented in this file.
+# 更新日志
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
-- Initial release
+## [1.0.0] 2018-12-03
+- 正式上架插件商店。
