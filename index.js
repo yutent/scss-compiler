@@ -43,19 +43,6 @@ let options = {
   exclude: ''
 }
 
-// const exec = function(arr, cb) {
-//   let cmd = arr.join(' ')
-//   return new Promise((yes, no) => {
-//     cp.exec(cmd, (err, out) => {
-//       if (err) {
-//         no('err: ' + err)
-//       } else {
-//         yes(arr)
-//       }
-//     })
-//   })
-// }
-
 const compileCss = (style, entry, output) => {
   return render(style, entry).then(css => {
     if (options.autoPrefixer) {
