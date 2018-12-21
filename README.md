@@ -7,6 +7,9 @@
 [![Build Status](https://travis-ci.org/yutent/scss-to-css.svg?branch=master)](https://travis-ci.org/yutent/scss-to-css)
 
 
+效果:
+![demo](./demo.gif)
+
 ## 出现的契机
 > 对于小项目来说, webpack等各种工程化工具, 实在过于重, 配置又繁琐。 而且还要安装一大堆模块。
 > 有时候,我们只想简单的使用scss带来的便捷而已。所以本着这个目的, 我自己写了一个vsc的插件, 可以在scss文件保存的时候, 自动编译成css文件(存于当前目录),并且自动补全浏览器前缀。
