@@ -8,7 +8,6 @@
 
 const vsc = require('vscode')
 const path = require('path')
-const cp = require('child_process')
 
 const fs = require('iofs')
 const scss = require('node-sass')
@@ -16,13 +15,7 @@ const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 let prefixer
 
-const std = vsc.window.createOutputChannel('scss-to-css')
-std.out = function(msg) {
-  std.appendLine(msg)
-}
-const log = function(...args) {
-  console.log.apply(console, args)
-}
+const log = console.log
 
 const render = function(style, file) {
   return new Promise((resolve, reject) => {
@@ -96,7 +89,7 @@ const Compiler = {
         })
       })
       .catch(err => {
-        std.out(err)
+        vsc.window.showInformationMessage(err)
       })
   },
 
@@ -130,8 +123,6 @@ const Compiler = {
 }
 
 function activate(ctx) {
-  // log('hello, the extend scss--to-css is running....')
-
   let folders = vsc.workspace.workspaceFolders
   let wsf = ''
   let browsersrc = ''
@@ -140,6 +131,12 @@ function activate(ctx) {
   }
   if (wsf) {
     browsersrc = path.join(wsf, '.browserslistrc')
+  } else {
+    let editor = vsc.window.activeTextEditor
+    if (editor) {
+      wsf = path.dirname(editor.document.fileName)
+      browsersrc = path.join(wsf, '.browserslistrc')
+    }
   }
 
   if (fs.exists(browsersrc)) {
@@ -163,10 +160,15 @@ function activate(ctx) {
   vsc.workspace.onDidSaveTextDocument(doc => {
     Compiler.filter(doc)
   })
-  // let cmd = vsc.commands.registerCommand('ScssCompiler.compile', function(r) {
-  //   log('----------------------------====================-----------------')
-  // })
-  // ctx.subscriptions.push(cmd)
+
+  let cmd = vsc.commands.registerCommand('Scss2css.compile', _ => {
+    let editor = vsc.window.activeTextEditor
+
+    if (editor) {
+      Compiler.compile(editor.document)
+    }
+  })
+  ctx.subscriptions.push(cmd)
 }
 
 function deactivate() {}

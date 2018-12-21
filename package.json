@@ -2,7 +2,7 @@
   "name": "scss-to-css",
   "displayName": "scss-to-css",
   "description": "🔥 最简单易用的SCSS编译器, 可自动编译scss文件及补全前缀",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
@@ -13,10 +13,25 @@
   "activationEvents": ["*"],
   "main": "./index",
   "contributes": {
-    "context": [
+    "commands": [
       {
         "command": "Scss2css.compile",
-        "title": "Compile this scss file"
+        "title": "Compile this scss..."
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "!inOutput",
+          "command": "Scss2css.compile",
+          "title": "Compile this scss..."
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "Scss2css.compile",
+        "key": "cmd+shift+c"
       }
     ],
     "configuration": {
