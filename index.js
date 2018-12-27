@@ -10,7 +10,7 @@ const vsc = require('vscode')
 const path = require('path')
 
 const fs = require('iofs')
-const scss = require('node-sass')
+const ScssLib = require('./lib/index.js')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 let prefixer
@@ -19,11 +19,11 @@ const log = console.log
 
 const render = function(style, file) {
   return new Promise((resolve, reject) => {
-    scss.render({ outputStyle: style, file }, (err, { css }) => {
-      if (err) {
-        reject(err)
+    ScssLib(file, { style: ScssLib.Sass.style[style] }, res => {
+      if (res && res.text) {
+        resolve(res.text)
       } else {
-        resolve(css)
+        reject(res)
       }
     })
   })
