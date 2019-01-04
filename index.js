@@ -122,6 +122,13 @@ const Compiler = {
   }
 }
 
+function __init__() {
+  let conf = vsc.workspace.getConfiguration('Scss2css')
+  Object.assign(options, conf)
+
+  options.output = options.output.split('|').map(it => it.trim())
+}
+
 function activate(ctx) {
   let folders = vsc.workspace.workspaceFolders
   let wsf = ''
@@ -145,17 +152,15 @@ function activate(ctx) {
       .toString()
       .split(/[\n\r]/)
   }
-
-  let conf = vsc.workspace.getConfiguration('Scss2css')
-  Object.assign(options, conf)
-
-  options.output = options.output.split('|').map(it => it.trim())
-
   prefixer = postcss().use(
     autoprefixer({
       browsers: options.browsers
     })
   )
+
+  __init__()
+
+  vsc.workspace.onDidChangeConfiguration(__init__)
 
   vsc.workspace.onDidSaveTextDocument(doc => {
     Compiler.filter(doc)

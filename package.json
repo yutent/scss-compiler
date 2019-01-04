@@ -1,8 +1,8 @@
 {
   "name": "scss-to-css",
   "displayName": "scss-to-css",
-  "description": "🔥 最简单易用的SCSS编译器, 可自动编译scss文件及补全前缀",
-  "version": "1.1.1",
+  "description": "🔥 The easiest way to compile scss file to css. And autoprefixer at the same time.",
+  "version": "1.2.0",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
@@ -36,27 +36,27 @@
     ],
     "configuration": {
       "type": "object",
-      "title": "Scss-to-css 配置",
+      "title": "Scss-to-css configuration",
       "properties": {
         "Scss2css.compileOnSave": {
           "type": "boolean",
           "default": true,
-          "description": "保存后自动编译"
+          "description": "Auto compile on document saved"
         },
         "Scss2css.autoPrefixer": {
           "type": "boolean",
           "default": true,
-          "description": "是否自动补全浏览器前缀(可以手动在项目根目录添加 .browserslistrc)"
+          "description": "will autoprefixer ?(You can add .browserslistrc file to the workspace root path)"
         },
         "Scss2css.output": {
           "type": "string",
           "default": "compressed",
-          "description": "css 文件输出方式. 使用 \"nested\", \"expanded\", \"compact\" or \"compressed\" .\n PS. 如果需要同时编译多种, 可用'|' 分隔, 如 compact | compressed \n 注: 如果编译多种,会自动微调文件名, 编译单个则不微调。"
+          "description": "css file output style. It  can be one of these [nested, expanded, compact or compressed] .\n  Also can be one more styles set (split with '|'), eg. compact | compressed \n Notice: It will auto rename the result css file"
         },
         "Scss2css.exclude": {
           "type": "string",
           "default": "",
-          "description": "要忽略的文件的正则表达式(默认不编译var.scss文件)。"
+          "description": "The RegExp of path what you can to ignore(the `var.scss file` will never be compiled)。"
         }
       }
     }

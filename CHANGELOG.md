@@ -1,5 +1,7 @@
-# 更新日志
+# 更新日志(Changed Logs)
 
+## [1.2.0] 2019-01-05
+- 配置优化
 
 ## [1.1.1] 2018-12-27
 - 更换sass库,兼容win10 [#1](https://github.com/yutent/scss-to-css/issues/1)
