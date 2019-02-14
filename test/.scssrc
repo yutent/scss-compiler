@@ -1,0 +1,4 @@
+{
+  "browsers": ["ie > 9", "iOS > 8", "Android >= 4.4", "ff > 38", "Chrome > 38"],
+  "outdir": "dist"
+}

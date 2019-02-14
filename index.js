@@ -37,6 +37,10 @@ let options = {
 }
 
 const compileCss = (style, entry, output) => {
+  if (options.outdir) {
+    let tmp = output.replace(options.workspace, '.')
+    output = path.join(options.outdir, tmp)
+  }
   return render(style, entry).then(css => {
     if (options.autoPrefixer) {
       return prefixer.process(css, { from: '', to: '' }).then(result => {
@@ -51,7 +55,7 @@ const compileCss = (style, entry, output) => {
 const Compiler = {
   compile(doc) {
     let origin = doc.fileName || ''
-    let target = origin.replace(/\.scss$/, '.')
+    let target = origin.replace(/\.scss$/, '')
     let task = []
 
     // 说明不是scss文件
@@ -60,14 +64,14 @@ const Compiler = {
     }
 
     task = options.output.map(style => {
-      let ext = 'css'
+      let ext = '.css'
 
       switch (style) {
         case 'compressed':
-          ext = 'min.' + ext
+          ext = '.min' + ext
           break
         default:
-          ext = style.slice(0, 1) + '.' + ext
+          ext = style.slice(0, 1) + ext
       }
 
       return { style, output: target + ext }
@@ -75,7 +79,7 @@ const Compiler = {
 
     // 编译单一类型, 则去掉文件名微调
     if (task.length === 1) {
-      task[0].output = target + 'css'
+      task[0].output = target + '.css'
     }
 
     task = task.map(item => {
@@ -124,40 +128,51 @@ const Compiler = {
 
 function __init__() {
   let conf = vsc.workspace.getConfiguration('Scss2css')
+  let folders = vsc.workspace.workspaceFolders
+  let wsDir = ''
+  let configFile = ''
+
   Object.assign(options, conf)
+  conf = null
 
   options.output = options.output.split('|').map(it => it.trim())
-}
 
-function activate(ctx) {
-  let folders = vsc.workspace.workspaceFolders
-  let wsf = ''
-  let browsersrc = ''
   if (folders && folders.length) {
-    wsf = folders[0].uri.path
+    wsDir = folders[0].uri.path
   }
-  if (wsf) {
-    browsersrc = path.join(wsf, '.browserslistrc')
+
+  if (wsDir) {
+    configFile = path.join(wsDir, '.scssrc')
   } else {
     let editor = vsc.window.activeTextEditor
     if (editor) {
-      wsf = path.dirname(editor.document.fileName)
-      browsersrc = path.join(wsf, '.browserslistrc')
+      wsDir = path.dirname(editor.document.fileName)
+      configFile = path.join(wsDir, '.scssrc')
     }
   }
 
-  if (fs.exists(browsersrc)) {
-    options.browsers = fs
-      .cat(browsersrc)
-      .toString()
-      .split(/[\n\r]/)
+  // 以配置文件所在目录为根目录(workspace)
+  if (fs.exists(configFile)) {
+    options.workspace = path.dirname(configFile)
+
+    let tmp = JSON.parse(fs.cat(configFile).toString())
+
+    Object.assign(options, tmp)
+    tmp = null
+
+    if (options.outdir) {
+      options.outdir = path.join(options.workspace, options.outdir)
+    }
   }
+
   prefixer = postcss().use(
     autoprefixer({
       browsers: options.browsers
     })
   )
+}
 
+function activate(ctx) {
   __init__()
 
   vsc.workspace.onDidChangeConfiguration(__init__)

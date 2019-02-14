@@ -33,7 +33,7 @@ Live demo:
 > Search `scss-to-css` and install in the marketplace.
 
 
-## .browserslistrc DEMO
+## .browserslistrc DEMO (Deprecated in 2.x)
 > Just for demo, you can change it by youself. If not exists, the default value will be `last 2 version`.
 
 ```
@@ -42,4 +42,17 @@ iOS > 8
 Android >= 4.4
 ff > 38
 Chrome > 38
+```
+
+## .scssrc DEMO (in 2.x or above)
+> instead of using `.browserslistrc`, we recommend to use `.scssrc`.
+
+```json
+{
+  "browsers": ["ie > 9", "iOS > 8", "Android >= 4.4", "ff > 38", "Chrome > 38"],
+  "outdir": "dist" // relative path of this '.scssrc' file.
+}
+
+// You can also set other config in this file.
+// eg. compileOnSave,autoPrefixer,output,exclude
 ```

@@ -1,7 +1,14 @@
 # 更新日志(Changed Logs)
 
+
+## [2.0.0] 2019-02-14
+- 大版本改动,移除 `.browserslistrc`的支持, 改用`.scssrc`;
+- 新增`outdir`选项支持, 允许将编译后的css文件统一存放.
+
+
 ## [1.2.0] 2019-01-05
 - 配置优化
+
 
 ## [1.1.1] 2018-12-27
 - 更换sass库,兼容win10 [#1](https://github.com/yutent/scss-to-css/issues/1)

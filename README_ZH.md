@@ -31,7 +31,7 @@
 > 直接在商店搜索安装即可。
 
 
-## .browserslistrc 示例
+## .browserslistrc 示例(2.x版之后已弃用)
 > 这只是个示例, 可自行根据项目需求, 修改配置。 没有配置则默认为 `last 2 version`。
 
 ```
@@ -40,4 +40,17 @@ iOS > 8
 Android >= 4.4
 ff > 38
 Chrome > 38
+```
+
+## .scssrc DEMO (2.x版及以上)
+> 与其使用 `.browserslistrc`, 我们更推荐使用`.scssrc`文件来配置编译选项。且写在该文件上的配置, 优先级要高于全局的配置项。
+
+```json
+{
+  "browsers": ["ie > 9", "iOS > 8", "Android >= 4.4", "ff > 38", "Chrome > 38"],
+  "outdir": "dist" //相对.scssrc文件的目录
+}
+
+// 你也可以在此配置里设置其他选项, 将会覆盖全局的配置.
+// 如: compileOnSave,autoPrefixer,output,exclude
 ```
