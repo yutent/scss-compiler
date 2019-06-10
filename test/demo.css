@@ -1,1 +1,1 @@
-ul{display:-webkit-flex;display:-ms-flexbox;display:flex}ul li{-webkit-flex:2;-ms-flex:2;flex:2;color:#fff}
+ul{display:flex}ul li{flex:2;color:#fff}

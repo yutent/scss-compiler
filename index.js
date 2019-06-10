@@ -16,6 +16,10 @@ const autoprefixer = require('autoprefixer')
 let prefixer
 
 const log = console.log
+const std = vsc.window.createOutputChannel('scss-to-css')
+std.out = function(msg) {
+  std.appendLine(msg)
+}
 
 const render = function(style, file) {
   return new Promise((resolve, reject) => {
@@ -23,7 +27,7 @@ const render = function(style, file) {
       if (res && res.text) {
         resolve(res.text)
       } else {
-        reject(res)
+        reject(res && res.message)
       }
     })
   })
@@ -41,15 +45,19 @@ const compileCss = (style, entry, output) => {
     let tmp = output.replace(options.workspace, '.')
     output = path.join(options.outdir, tmp)
   }
-  return render(style, entry).then(css => {
-    if (options.autoPrefixer) {
-      return prefixer.process(css, { from: '', to: '' }).then(result => {
-        return { css: result.css, output }
-      })
-    } else {
-      return { css, output }
-    }
-  })
+  return render(style, entry)
+    .then(css => {
+      if (options.autoPrefixer) {
+        return prefixer.process(css, { from: '', to: '' }).then(result => {
+          return { css: result.css, output }
+        })
+      } else {
+        return { css, output }
+      }
+    })
+    .catch(err => {
+      std.out(err)
+    })
 }
 
 const Compiler = {
@@ -172,12 +180,15 @@ function __init__() {
   )
 }
 
-function activate(ctx) {
+function deactivate() {}
+
+exports.activate = function(ctx) {
   __init__()
 
   vsc.workspace.onDidChangeConfiguration(__init__)
 
   vsc.workspace.onDidSaveTextDocument(doc => {
+    std.clear()
     Compiler.filter(doc)
   })
 
@@ -190,8 +201,4 @@ function activate(ctx) {
   })
   ctx.subscriptions.push(cmd)
 }
-
-function deactivate() {}
-
-exports.activate = activate
 exports.deactivate = deactivate
