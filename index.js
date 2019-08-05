@@ -9,8 +9,8 @@
 const vsc = require('vscode')
 const path = require('path')
 
+const exec = require('child_process').exec
 const fs = require('iofs')
-const ScssLib = require('./lib/index.js')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 let prefixer
@@ -21,16 +21,21 @@ std.out = function(msg) {
   std.appendLine(msg)
 }
 
-const render = function(style, file) {
-  return new Promise((resolve, reject) => {
-    ScssLib(file, { style: ScssLib.Sass.style[style] }, res => {
-      if (res && res.text) {
-        resolve(res.text)
+function run(cmd) {
+  return new Promise((yes, no) => {
+    exec(cmd, (err, res) => {
+      if (err) {
+        std.out(err)
+        no(err)
       } else {
-        reject(res && res.message)
+        yes(res)
       }
     })
   })
+}
+
+const render = function(style, file) {
+  return run(`node-sass --output-style ${style} ${file}`)
 }
 
 let options = {
@@ -40,7 +45,7 @@ let options = {
   exclude: ''
 }
 
-const compileCss = (style, entry, output) => {
+const compileScss = (style, entry, output) => {
   if (options.outdir) {
     let tmp = output.replace(options.workspace, '.')
     output = path.join(options.outdir, tmp)
@@ -91,7 +96,7 @@ const Compiler = {
     }
 
     task = task.map(item => {
-      return compileCss(item.style, origin, item.output)
+      return compileScss(item.style, origin, item.output)
     })
 
     Promise.all(task)

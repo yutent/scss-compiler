@@ -29,6 +29,12 @@ Live demo:
 ## Issues
 > This extension work well on all os. If any problem please let me known [issue](https://github.com/yutent/scss-to-css/issues)
 
+
+## Dependencies
+> We use `node-sass` instead of `libsass`
+ - `node-sass`, You need to install this module manually. Maybe `root` is required on linux.
+
+
 ## Installation
 > Search `scss-to-css` and install in the marketplace.
 
