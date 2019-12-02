@@ -129,8 +129,7 @@ const Compiler = {
 
     // 过滤不编译的文件
     if (options.exclude) {
-      let exp = new RegExp(options.exclude, 'i')
-      if (exp.test(origin)) {
+      if (options.exclude.test(origin)) {
         return
       }
     }
@@ -176,6 +175,10 @@ function __init__() {
     if (options.outdir) {
       options.outdir = path.join(options.workspace, options.outdir)
     }
+  }
+
+  if (options.exclude) {
+    options.exclude = new RegExp(options.exclude, 'i')
   }
 
   prefixer = postcss().use(
