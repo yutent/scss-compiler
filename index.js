@@ -163,10 +163,10 @@ function __init__() {
     }
   }
 
-  // 以配置文件所在目录为根目录(workspace)
-  if (fs.exists(configFile)) {
-    options.workspace = path.dirname(configFile)
+  options.workspace = wsDir
 
+  // 有配置文件时, 优先使用配置文件的配置
+  if (fs.exists(configFile)) {
     let tmp = JSON.parse(fs.cat(configFile).toString())
 
     Object.assign(options, tmp)

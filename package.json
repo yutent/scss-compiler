@@ -2,7 +2,7 @@
   "name": "scss-to-css",
   "displayName": "scss-to-css",
   "description": "🔥 The easiest way to compile scss file to css. And autoprefixer at the same time.",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
