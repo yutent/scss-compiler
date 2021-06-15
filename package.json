@@ -83,6 +83,6 @@
   "dependencies": {
     "autoprefixer": "^9.3.1",
     "iofs": "^1.1.0",
-    "postcss": "^7.0.6"
+    "postcss": "^7.0.36"
   }
 }
