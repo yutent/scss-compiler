@@ -1,41 +1,37 @@
 /**
  *
- * @author yutent<yutent@doui.cc>
+ * @author yutent<yutent.io@gmail.com>
  * @date 2018/11/01 09:37:55
  */
 
-'use strict'
-
 const vsc = require('vscode')
 const path = require('path')
+const scss = require('sass')
 
-const exec = require('child_process').exec
 const fs = require('iofs')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 let prefixer
 
-const log = console.log
 const std = vsc.window.createOutputChannel('scss-to-css')
 std.out = function(msg) {
   std.appendLine(msg)
 }
 
-function run(cmd) {
-  return new Promise((yes, no) => {
-    exec(cmd, (err, res) => {
-      if (err) {
-        std.out(err)
-        no(err)
-      } else {
-        yes(res)
-      }
-    })
-  })
-}
-
-const render = function(style, file) {
-  return run(`node-sass --output-style ${style} ${file}`)
+// 编译scss
+function render(style, file) {
+  try {
+    let data = fs.cat(file).toString()
+    return (
+      scss.renderSync({
+        data,
+        outputStyle: style
+      }).css + ''
+    ).trim()
+  } catch (err) {
+    std.out(err)
+    // console.error(err)
+  }
 }
 
 let options = {
@@ -50,19 +46,16 @@ const compileScss = (style, entry, output) => {
     let tmp = output.replace(options.workspace, '.')
     output = path.join(options.outdir, tmp)
   }
-  return render(style, entry)
-    .then(css => {
-      if (options.autoPrefixer) {
-        return prefixer.process(css, { from: '', to: '' }).then(result => {
-          return { css: result.css, output }
-        })
-      } else {
-        return { css, output }
-      }
+
+  let css = render(style, entry)
+
+  if (options.autoPrefixer) {
+    return prefixer.process(css, { from: '', to: '' }).then(result => {
+      return { css: result.css, output }
     })
-    .catch(err => {
-      std.out(err)
-    })
+  } else {
+    return Promise.resolve({ css, output })
+  }
 }
 
 const Compiler = {

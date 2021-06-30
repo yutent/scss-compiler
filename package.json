@@ -2,15 +2,19 @@
   "name": "scss-to-css",
   "displayName": "scss-to-css",
   "description": "🔥 The easiest way to compile scss file to css. And autoprefixer at the same time.",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "publisher": "yutent",
   "author": "Yutent [@yutent]",
   "icon": "logo.png",
   "engines": {
     "vscode": "^1.28.0"
   },
-  "categories": ["Other"],
-  "activationEvents": ["*"],
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./index",
   "contributes": {
     "commands": [
@@ -83,6 +87,7 @@
   "dependencies": {
     "autoprefixer": "^9.3.1",
     "iofs": "^1.1.0",
-    "postcss": "^7.0.6"
+    "postcss": "^7.0.6",
+    "sass": "^1.35.1"
   }
 }
