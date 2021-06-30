@@ -1,5 +1,5 @@
 # scss-to-css
-> The easiest way to compile scss file to css without using other tools like `webpack`. And autoprefixer at the same time.
+> It can be used for simple compilation/compression of scss files without installing various front-end engineering tools (webpack, etc.).
 
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/yutent.scss-to-css.svg)](https://marketplace.visualstudio.com/items?itemName=yutent.scss-to-css)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/yutent.scss-to-css.svg)](https://marketplace.visualstudio.com/items?itemName=yutent.scss-to-css)
@@ -14,8 +14,8 @@ Live demo:
 ![demo](./demo.gif)
 
 ## Why Scss-to-css
-> For some small project or teaching speech. It's too fat to deploy a webpack env.
-> Now, `scss-to-css` help us to compile scss file to css file at a none webpack project and autoprefixer.
+> For small projects, various engineering tools such as webpack are too heavy and cumbersome to configure. And a lot of modules have to be installed.
+> Sometimes, we just want to simply use the convenience brought by scss. So for this purpose, I wrote a vsc plug-in, which can be automatically compiled into a css file (stored in the current directory by default) when the scss file is saved, and the browser prefix is ​​automatically completed.
 
 
 ## Configuration
@@ -31,7 +31,9 @@ Live demo:
 
 
 ## Dependencies
-> We use `node-sass` instead of `libsass`
+> We use `node-sass`(Deprecated in 3.1.0) instead of `libsass`.
+>> v3.1.0 uses `sass` instead. No need to install node-sass globally
+
  - `node-sass`, You need to install this module manually. Maybe `root` is required on linux.
 
 

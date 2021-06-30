@@ -29,7 +29,8 @@
 
 
 ## 依赖
-> 3.x之后, 弃用libsass,改为node-sass, 但由于vscode的限制, node-sass在拓展里使用会有问题, 所以需要手动全局安装。
+> 3.x之后, 弃用`libsass`,改为`node-sass`, 但由于vscode的限制, `node-sass`在拓展里使用会有问题, 所以需要手动全局安装。
+>> v3.1.0改用并内置`sass`, 无需全局安装`node-sass`了。
 
 - `node-sass`, 需要手动安装这个模块, 执行`npm i -g node-sass`, 在linux下, 可能需要root权限才可以安装。
 
