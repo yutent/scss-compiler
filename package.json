@@ -9,13 +9,9 @@
   "engines": {
     "vscode": "^1.28.0"
   },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./index",
+  "categories": ["Formatters"],
+  "activationEvents": ["*"],
+  "main": "index.js",
   "contributes": {
     "commands": [
       {
@@ -81,13 +77,21 @@
     "autoprefixer",
     "yutent"
   ],
-  "scripts": {},
+  "scripts": {
+    "start": "npm run vscode:prepublish",
+    "vscode:prepublish": "rollup -c"
+  },
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
     "autoprefixer": "^9.3.1",
     "iofs": "^1.1.0",
     "postcss": "^7.0.6",
     "sass": "^1.35.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "rollup": "^2.52.7"
   }
 }
