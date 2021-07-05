@@ -78,7 +78,7 @@
     "yutent"
   ],
   "scripts": {
-    "start": "esbuild entry.js --bundle --outfile=index.js --external:vscode --format=cjs --platform=node",
+    "start": "esbuild index.js --bundle --outfile=out.js --external:vscode --format=cjs --platform=node",
     "vscode:prepublish": "npm start -- --minify"
   },
   "license": "MIT",
