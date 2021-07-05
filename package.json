@@ -11,7 +11,7 @@
   },
   "categories": ["Formatters"],
   "activationEvents": ["*"],
-  "main": "index.js",
+  "main": "out.js",
   "contributes": {
     "commands": [
       {
@@ -78,8 +78,8 @@
     "yutent"
   ],
   "scripts": {
-    "start": "npm run vscode:prepublish",
-    "vscode:prepublish": "rollup -c"
+    "start": "esbuild entry.js --bundle --outfile=index.js --external:vscode --format=cjs --platform=node",
+    "vscode:prepublish": "npm start -- --minify"
   },
   "license": "MIT",
   "dependencies": {
@@ -89,9 +89,6 @@
     "sass": "^1.35.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "rollup": "^2.52.7"
+    "esbuild": "^0.12.14"
   }
 }

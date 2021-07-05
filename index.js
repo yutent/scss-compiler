@@ -64,8 +64,6 @@ const Compiler = {
     let target = origin.replace(/\.scss$/, '')
     let task = []
 
-    console.log(origin, target)
-
     // 说明不是scss文件
     if (origin === target) {
       return
@@ -96,7 +94,6 @@ const Compiler = {
 
     Promise.all(task)
       .then(list => {
-        console.log('>'.repeat(50), '\n', list)
         list.forEach(it => {
           fs.echo(it.css, it.output)
         })

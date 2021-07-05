@@ -13,4 +13,6 @@ package-lock.json
 
 node_modules
 .vscode-test
+out.js
 *.vsix
+*.css

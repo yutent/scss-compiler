@@ -5,7 +5,6 @@ test/**
 package-lock.json
 .travis.yml
 .gitignore
-entry.js
-rollup.config.js
+index.js
 test.js
 
